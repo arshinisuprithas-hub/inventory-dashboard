@@ -362,10 +362,49 @@
       renderTable();
     }));
 
-    $$('.nav-item').forEach(n => n.addEventListener('click', () => {
-      $$('.nav-item').forEach(x => x.classList.remove('active'));
-      n.classList.add('active');
-    }));
+    $$('.nav-item').forEach(item => {
+
+    item.addEventListener('click', function () {
+
+        // Active menu
+        $$('.nav-item').forEach(nav =>
+            nav.classList.remove('active')
+        );
+
+        this.classList.add('active');
+
+        const section = this.dataset.section;
+
+        // Map menu items to page sections
+        const sectionMap = {
+            dashboard: "dashboard",
+            inventory: "inventory",
+            ageing: "ageing",
+            customers: "ageing",
+            materials: "ageing",
+            liquidation: "liquidation",
+            reports: "inventory",
+            settings: null
+        };
+
+        const targetId = sectionMap[section];
+
+        if (targetId) {
+            const target = document.getElementById(targetId);
+
+            if (target) {
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        } else {
+            alert("Settings page coming soon!");
+        }
+
+    });
+
+});
   }
 
   // ---------- Init ----------
