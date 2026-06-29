@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inventory Analytics Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark"><i class="fa-solid fa-cube"></i></div>
+      <div class="logo-text"><strong>Inventra</strong><span>Analytics Suite</span></div>
+    </div>
+    <nav>
+      <a class="nav-item active" data-section="dashboard"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a>
+      <a class="nav-item" data-section="inventory"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span></a>
+      <a class="nav-item" data-section="ageing"><i class="fa-solid fa-hourglass-half"></i><span>Ageing Analysis</span></a>
+      <a class="nav-item" data-section="customers"><i class="fa-solid fa-users"></i><span>Customers</span></a>
+      <a class="nav-item" data-section="materials"><i class="fa-solid fa-layer-group"></i><span>Materials</span></a>
+      <a class="nav-item" data-section="liquidation"><i class="fa-solid fa-droplet"></i><span>Liquidation</span></a>
+      <a class="nav-item" data-section="reports"><i class="fa-solid fa-file-lines"></i><span>Reports</span></a>
+      <a class="nav-item" data-section="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="upgrade-card">
+        <i class="fa-solid fa-bolt"></i>
+        <div>
+          <strong>Pro Insights</strong>
+          <span>AI-powered analytics</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="title-block">
+        <h1>Inventory Dashboard</h1>
+        <p id="todayDate"></p>
+      </div>
+      <div class="top-actions">
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="globalSearch" placeholder="Search materials, customers..." />
+        </div>
+        <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <button class="icon-btn" title="Help"><i class="fa-regular fa-circle-question"></i></button>
+        <div class="profile">
+          <div class="avatar">AK</div>
+          <div class="profile-meta"><strong>Arjun K.</strong><span>Plant Manager</span></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Quick actions -->
+    <section class="quick-bar">
+      <div class="filters">
+        <div class="filter">
+          <label>Customer</label>
+          <select id="filterCustomer"><option value="">All</option></select>
+        </div>
+        <div class="filter">
+          <label>Age Category</label>
+          <select id="filterAge"><option value="">All</option></select>
+        </div>
+        <div class="filter">
+          <label>Program</label>
+          <select id="filterProgram"><option value="">All</option></select>
+        </div>
+        <div class="filter">
+          <label>Period</label>
+          <select id="filterSource"><option value="">All</option></select>
+        </div>
+        <div class="filter grow">
+          <label>Material</label>
+          <input id="filterMaterial" placeholder="Search material #, description..." />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" id="btnReset"><i class="fa-solid fa-rotate-left"></i>Reset</button>
+        <button class="btn ghost" id="btnRefresh"><i class="fa-solid fa-arrows-rotate"></i>Refresh</button>
+        <button class="btn ghost" id="btnPrint"><i class="fa-solid fa-print"></i>Print</button>
+        <button class="btn primary" id="btnExport"><i class="fa-solid fa-file-arrow-down"></i>Export CSV</button>
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="kpis">
+      <div class="kpi-card">
+        <div class="kpi-icon ico-blue"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total Inventory Value</span>
+          <strong class="kpi-value" data-counter id="kpiValue">0</strong>
+          <span class="kpi-sub">INR · across all SKUs</span>
+        </div>
+        <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i><span id="kpiValueDelta">+0%</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon ico-indigo"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total Materials</span>
+          <strong class="kpi-value" data-counter id="kpiMaterials">0</strong>
+          <span class="kpi-sub">unique SKU records</span>
+        </div>
+        <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i><span id="kpiMaterialsDelta">+0%</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon ico-amber"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Slow Moving Materials</span>
+          <strong class="kpi-value" data-counter id="kpiSlow">0</strong>
+          <span class="kpi-sub">aged > 180 days</span>
+        </div>
+        <div class="kpi-trend down"><i class="fa-solid fa-arrow-trend-down"></i><span id="kpiSlowDelta">+0%</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon ico-red"><i class="fa-solid fa-skull-crossbones"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Dead Stock (&gt;2 Years)</span>
+          <strong class="kpi-value" data-counter id="kpiDead">0</strong>
+          <span class="kpi-sub">requires liquidation</span>
+        </div>
+        <div class="kpi-trend down"><i class="fa-solid fa-arrow-trend-down"></i><span id="kpiDeadDelta">+0%</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon ico-green"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Inventory Health</span>
+          <strong class="kpi-value" data-counter id="kpiHealth">0</strong>
+          <span class="kpi-sub">% fresh (≤180 days)</span>
+        </div>
+        <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i><span id="kpiHealthDelta">+0%</span></div>
+      </div>
+    </section>
+
+    <!-- Charts grid -->
+    <section class="charts-grid">
+      <div class="card chart-card span-4">
+        <div class="card-head"><h3>Inventory Ageing Distribution</h3><span class="muted">By age bucket</span></div>
+        <div class="chart-wrap"><canvas id="chartAgeingDonut"></canvas></div>
+      </div>
+      <div class="card chart-card span-8">
+        <div class="card-head"><h3>Inventory Value by Age Category</h3><span class="muted">INR · grouped by bucket</span></div>
+        <div class="chart-wrap"><canvas id="chartAgeBar"></canvas></div>
+      </div>
+
+      <div class="card chart-card span-6">
+        <div class="card-head"><h3>Top Customers by Inventory Value</h3><span class="muted">Top 10</span></div>
+        <div class="chart-wrap tall"><canvas id="chartCustomers"></canvas></div>
+      </div>
+      <div class="card chart-card span-6">
+        <div class="card-head"><h3>Top Materials by Closing Value</h3><span class="muted">Top 10</span></div>
+        <div class="chart-wrap tall"><canvas id="chartMaterials"></canvas></div>
+      </div>
+
+      <div class="card chart-card span-5">
+        <div class="card-head"><h3>Inventory Distribution by Program</h3><span class="muted">Share of value</span></div>
+        <div class="chart-wrap"><canvas id="chartPrograms"></canvas></div>
+      </div>
+      <div class="card chart-card span-7">
+        <div class="card-head"><h3>Monthly Inventory Trend</h3><span class="muted">Closing value by snapshot period</span></div>
+        <div class="chart-wrap"><canvas id="chartTrend"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section class="insights">
+      <div class="section-head"><h2><i class="fa-solid fa-lightbulb"></i> Inventory Insights</h2><span class="muted">Auto-generated from your data</span></div>
+      <div class="insights-grid" id="insightsGrid"></div>
+    </section>
+
+    <!-- Table -->
+    <section class="card table-card">
+      <div class="card-head between">
+        <div>
+          <h3>Inventory Records</h3>
+          <span class="muted" id="tableMeta">0 rows</span>
+        </div>
+        <div class="table-tools">
+          <div class="search small">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="tableSearch" placeholder="Search in table..." />
+          </div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table id="invTable">
+          <thead>
+            <tr>
+              <th data-sort="Material">Material #</th>
+              <th data-sort="Material Description">Description</th>
+              <th data-sort="Customer">Customer</th>
+              <th data-sort="Progm">Program</th>
+              <th data-sort="Closing Stock" class="num">Closing Stock</th>
+              <th data-sort="Closing Value" class="num">Closing Value</th>
+              <th data-sort="Ageing- Consm">Ageing</th>
+              <th data-sort="Last Consumptn">Last Consumption</th>
+              <th data-sort="Remarks">Remarks</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <button id="pagePrev"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="pageInfo">Page 1 / 1</span>
+        <button id="pageNext"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>© 2026 Inventra Analytics · Built with Chart.js · Data from uploaded ageing workbooks</span>
+    </footer>
+  </main>
+</div>
+<div id="loader" class="loader"><div class="spinner"></div><span>Loading inventory data…</span></div>
+<script src="script.js"></script>
+</body>
+</html>
