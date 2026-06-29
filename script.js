@@ -362,44 +362,59 @@
       renderTable();
     }));
 
-    $$('.nav-item').forEach(item => {
+    
+  $$('.nav-item').forEach(item => {
 
     item.addEventListener('click', function () {
 
-        // Active menu
-        $$('.nav-item').forEach(nav =>
-            nav.classList.remove('active')
+        document.querySelectorAll(".nav-item").forEach(nav =>
+            nav.classList.remove("active")
         );
 
-        this.classList.add('active');
+        this.classList.add("active");
 
-        const section = this.dataset.section;
+        let target = null;
 
-        // Map menu items to page sections
-        const sectionMap = {
-            dashboard: "dashboard",
-            inventory: "inventory",
-            ageing: "ageing",
-            customers: "ageing",
-            materials: "ageing",
-            liquidation: "liquidation",
-            reports: "inventory",
-            settings: null
-        };
+        switch(this.dataset.section){
 
-        const targetId = sectionMap[section];
+            case "dashboard":
+                target = document.querySelector(".kpis");
+                break;
 
-        if (targetId) {
-            const target = document.getElementById(targetId);
+            case "inventory":
+                target = document.querySelector(".table-card");
+                break;
 
-            if (target) {
-                target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            }
-        } else {
-            alert("Settings page coming soon!");
+            case "ageing":
+                target = document.getElementById("chartAgeingDonut");
+                break;
+
+            case "customers":
+                target = document.getElementById("chartCustomers");
+                break;
+
+            case "materials":
+                target = document.getElementById("chartMaterials");
+                break;
+
+            case "liquidation":
+                target = document.getElementById("insightsGrid");
+                break;
+
+            case "reports":
+                target = document.querySelector(".table-card");
+                break;
+
+            case "settings":
+                alert("Settings coming soon!");
+                return;
+        }
+
+        if(target){
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
         }
 
     });
