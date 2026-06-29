@@ -93,9 +93,10 @@
         <button class="btn primary" id="btnExport"><i class="fa-solid fa-file-arrow-down"></i>Export CSV</button>
       </div>
     </section>
-
+    <section id="dashboard">
+      
     <!-- KPIs -->
-    <section class="kpis">
+    <section id="dashboard" class="kpis">
       <div class="kpi-card">
         <div class="kpi-icon ico-blue"><i class="fa-solid fa-sack-dollar"></i></div>
         <div class="kpi-body">
@@ -144,7 +145,7 @@
     </section>
 
     <!-- Charts grid -->
-    <section class="charts-grid">
+    <section id="ageing" class="charts-grid">
       <div class="card chart-card span-4">
         <div class="card-head"><h3>Inventory Ageing Distribution</h3><span class="muted">By age bucket</span></div>
         <div class="chart-wrap"><canvas id="chartAgeingDonut"></canvas></div>
@@ -174,13 +175,14 @@
     </section>
 
     <!-- Insights -->
-    <section class="insights">
+    <section id="liquidation" class="insights">
       <div class="section-head"><h2><i class="fa-solid fa-lightbulb"></i> Inventory Insights</h2><span class="muted">Auto-generated from your data</span></div>
       <div class="insights-grid" id="insightsGrid"></div>
     </section>
+    </section>
 
     <!-- Table -->
-    <section class="card table-card">
+    <section id="inventory" class="card table-card">
       <div class="card-head between">
         <div>
           <h3>Inventory Records</h3>
