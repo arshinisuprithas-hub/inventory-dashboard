@@ -66,7 +66,11 @@ input,select{font-family:inherit;font-size:14px;color:inherit;outline:none;borde
   cursor:pointer;transition:all var(--t);
 }
 .nav-item i{width:18px;text-align:center;color:var(--muted);transition:color var(--t)}
-.nav-item:hover{background:var(--primary-50);color:var(--primary)}
+.nav-item:hover{
+    background:var(--primary-50);
+    color:var(--primary);
+    transform:translateX(6px);
+}
 .nav-item:hover i{color:var(--primary)}
 .nav-item.active{
   background:linear-gradient(135deg,var(--primary),var(--primary-600));
@@ -101,7 +105,16 @@ input,select{font-family:inherit;font-size:14px;color:inherit;outline:none;borde
   padding:10px 14px;border-radius:12px;width:320px;
   transition:all var(--t);
 }
-.search:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-50)}
+.search{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 16px;
+    width:360px;
+}
 .search i{color:var(--muted)}
 .search input{flex:1;width:100%}
 .search.small{width:260px;padding:8px 12px}
@@ -118,7 +131,15 @@ input,select{font-family:inherit;font-size:14px;color:inherit;outline:none;borde
   background:var(--red);box-shadow:0 0 0 2px var(--surface);
 }
 
-.profile{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:8px 14px;
+}
 .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--primary));color:white;font-weight:700;display:grid;place-items:center;font-size:12px}
 .profile-meta{display:flex;flex-direction:column;line-height:1.1}
 .profile-meta strong{font-size:13px}
@@ -142,14 +163,28 @@ input,select{font-family:inherit;font-size:14px;color:inherit;outline:none;borde
 .filter select:focus,.filter input:focus{border-color:var(--primary);background:white;box-shadow:0 0 0 4px var(--primary-50)}
 
 .actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;transition:all var(--t);border:1px solid transparent}
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 18px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    transition:.25s;
+}
 .btn.ghost{background:var(--surface);color:var(--ink-2);border-color:var(--line)}
 .btn.ghost:hover{color:var(--primary);border-color:var(--primary);background:var(--primary-50)}
 .btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-600));color:white;box-shadow:0 8px 18px -8px rgba(30,95,255,.6)}
 .btn.primary:hover{transform:translateY(-1px);box-shadow:0 12px 22px -8px rgba(30,95,255,.7)}
 
 /* =========== KPIs =========== */
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:22px}
+.kpis{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(260px,1fr));
+    gap:22px;
+    margin-bottom:28px;
+}
 .kpi-card{
   position:relative;
   background:var(--surface);
@@ -213,7 +248,7 @@ input,select{font-family:inherit;font-size:14px;color:inherit;outline:none;borde
 .span-7{grid-column:span 7}
 .span-8{grid-column:span 8}
 .chart-card{display:flex;flex-direction:column}
-.chart-wrap{position:relative;height:260px}
+.chart-wrap{position:relative;height:320px}
 .chart-wrap.tall{height:340px}
 
 /* =========== Insights =========== */
@@ -252,10 +287,17 @@ thead th{
 }
 thead th.num{text-align:right}
 thead th:hover{color:var(--primary)}
-tbody td{padding:12px 16px;border-bottom:1px solid #f1f4fa;vertical-align:middle;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+tbody td{
+    padding:14px 18px;
+    border-bottom:1px solid #edf2f7;
+    vertical-align:middle;
+}
 tbody td.num{text-align:right;font-variant-numeric:tabular-nums}
 tbody tr{transition:background var(--t)}
-tbody tr:hover{background:#f8faff}
+tbody tr:hover{
+    background:#f4f8ff;
+    transition:.2s;
+}
 .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;background:var(--primary-50);color:var(--primary)}
 .badge.amber{background:rgba(245,158,11,.12);color:#b76a00}
 .badge.red{background:rgba(239,68,68,.12);color:#b91c1c}
@@ -312,8 +354,38 @@ tbody tr:hover{background:#f8faff}
 
 /* =========== Print =========== */
 @media print{
-  .sidebar,.topbar,.quick-bar,.pagination,.loader{display:none!important}
-  body{background:white}
-  .main{padding:0}
-  .card{box-shadow:none;border-color:#ddd;break-inside:avoid}
+
+.sidebar,
+.topbar,
+.quick-bar,
+.pagination,
+.loader,
+.footer{
+    display:none!important;
+}
+
+body{
+    background:white!important;
+}
+
+.main{
+    padding:0!important;
+    margin:0!important;
+}
+
+.kpi-card,
+.card{
+    box-shadow:none!important;
+    border:1px solid #ddd!important;
+    page-break-inside:avoid;
+}
+
+.chart-wrap{
+    height:250px!important;
+}
+
+table{
+    font-size:12px;
+}
+
 }
