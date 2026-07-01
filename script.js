@@ -15,6 +15,10 @@ let month1Data = [];
 
 let month2Data = [];
 
+   // Combined Dataset
+
+let allData = [];
+
 let month1File = null;
 
 let month2File = null;
@@ -521,6 +525,7 @@ document
     month1Data=await readExcel(month1File);
 
     month2Data=await readExcel(month2File);
+    allData = [...month1Data, ...month2Data];
 
     console.log(month1Data);
 
@@ -529,4 +534,90 @@ document
     alert("Dashboard data loaded successfully!");
 
 });
+
+function getUniqueValues(data, field){
+
+    return [...new Set(
+
+        data
+        .map(row => row[field])
+        .filter(value =>
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        )
+
+    )].sort();
+
+}
+
+function fillDropdown(id, values){
+
+    const dropdown = document.getElementById(id);
+
+    dropdown.innerHTML = "";
+
+    const option = document.createElement("option");
+
+    option.value = "All";
+
+    option.textContent = "All";
+
+    dropdown.appendChild(option);
+
+    values.forEach(value => {
+
+        const op = document.createElement("option");
+
+        op.value = value;
+
+        op.textContent = value;
+
+        dropdown.appendChild(op);
+
+    });
+
+}
+fillDropdown(
+
+    "customerFilter",
+
+    getUniqueValues(allData,"Customer")
+
+);
+
+fillDropdown(
+
+    "programFilter",
+
+    getUniqueValues(allData,"Progm")
+
+);
+
+fillDropdown(
+
+    "materialFilter",
+
+    getUniqueValues(allData,"Material")
+
+);
+
+fillDropdown(
+
+    "typeFilter",
+
+    getUniqueValues(allData,"Type")
+
+);
+
+fillDropdown(
+
+    "ageFilter",
+
+    getUniqueValues(allData,"Ageing")
+
+);
+
+
+
 
