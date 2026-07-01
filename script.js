@@ -7,6 +7,18 @@
 (() => {
   'use strict';
 
+   // ===============================
+// Excel Upload Engine
+// ===============================
+
+let month1Data = [];
+
+let month2Data = [];
+
+let month1File = null;
+
+let month2File = null;
+
   // ---------- Globals ----------
   const PALETTE = ['#1e5fff','#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6','#6366f1','#14b8a6','#f97316','#ec4899'];
   const AGE_ORDER = ['<30days','<60days','< 90 days','< 180 days','<1 Year','>1 Year','>2 Year'];
@@ -441,3 +453,80 @@
 
   document.addEventListener('DOMContentLoaded', init);
 })();
+function readExcel(file){
+
+    return new Promise((resolve,reject)=>{
+
+        const reader = new FileReader();
+
+        reader.onload=(e)=>{
+
+            const data = new Uint8Array(e.target.result);
+
+            const workbook = XLSX.read(data,{
+                type:"array"
+            });
+
+            const sheetName=workbook.SheetNames[0];
+
+            const worksheet=workbook.Sheets[sheetName];
+
+            const json=XLSX.utils.sheet_to_json(worksheet);
+
+            resolve(json);
+
+        };
+
+        reader.onerror=reject;
+
+        reader.readAsArrayBuffer(file);
+
+    });
+
+}
+document
+.getElementById("month1File")
+.addEventListener("change",function(){
+
+    month1File=this.files[0];
+
+    document
+    .getElementById("month1Name")
+    .textContent=month1File.name;
+
+});
+document
+.getElementById("month2File")
+.addEventListener("change",function(){
+
+    month2File=this.files[0];
+
+    document
+    .getElementById("month2Name")
+    .textContent=month2File.name;
+
+});
+document
+.getElementById("btnLoadData")
+.addEventListener("click",async()=>{
+
+    if(!month1File || !month2File){
+
+        alert("Please select both Excel files.");
+
+        return;
+
+    }
+
+    month1Data=await readExcel(month1File);
+
+    month2Data=await readExcel(month2File);
+
+    console.log(month1Data);
+
+    console.log(month2Data);
+
+    alert("Dashboard data loaded successfully!");
+
+});
+
