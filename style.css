@@ -145,6 +145,83 @@ input,select{font-family:inherit;font-size:14px;color:inherit;outline:none;borde
 .profile-meta strong{font-size:13px}
 .profile-meta span{font-size:11px;color:var(--muted)}
 
+/* =========== Data Manager =========== */
+
+.data-manager{
+    margin-bottom:22px;
+}
+
+.upload-grid{
+    display:grid;
+    grid-template-columns:2fr 2fr 1fr;
+    gap:18px;
+    align-items:end;
+    margin-top:18px;
+}
+
+.upload-card{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.upload-card label{
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    font-weight:600;
+    letter-spacing:.05em;
+}
+
+.upload-card input[type=file]{
+    border:2px dashed var(--line);
+    background:#fbfcfe;
+    padding:14px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.upload-card input[type=file]:hover{
+    border-color:var(--primary);
+    background:var(--primary-50);
+}
+
+.upload-card small{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.upload-action{
+    display:flex;
+    justify-content:flex-end;
+    align-items:end;
+    height:100%;
+}
+
+.upload-action .btn{
+    width:100%;
+    justify-content:center;
+}
+
+/* Responsive */
+
+@media(max-width:1000px){
+
+.upload-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.upload-action{
+
+    justify-content:stretch;
+
+}
+
+}
+
 /* =========== Quick bar / filters =========== */
 .quick-bar{
   display:flex;align-items:flex-end;justify-content:space-between;gap:18px;
